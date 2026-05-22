@@ -1,0 +1,87 @@
+# ============================================
+# Hugo 站点配置 - 调研报告博客
+# ============================================
+baseURL: "https://lshy0000.github.io/research-blog/"
+languageCode: "zh-CN"
+title: "调研报告"
+theme: "PaperMod"
+
+# 分页
+paginate: 10
+
+# 启用 emoji
+enableEmoji: true
+
+# Git 信息（显示最后修改时间）
+enableGitInfo: true
+
+# ============================================
+# 菜单
+# ============================================
+menu:
+  main:
+    - name: 归档
+      url: archives/
+      weight: 10
+    - name: 标签
+      url: tags/
+      weight: 20
+    - name: 搜索
+      url: search/
+      weight: 30
+
+# ============================================
+# PaperMod 主题参数
+# ============================================
+params:
+  # 首页显示模式
+  homeInfoParams:
+    Title: "📋 调研报告"
+    Content: "技术调研、行业分析、竞品研究 —— 持续更新中"
+
+  # 社交链接（暂时空）
+  socialIcons: []
+
+  # 显示阅读时间和字数
+  ShowReadingTime: true
+  ShowWordCount: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowPostNavLinks: true
+
+  # 默认主题模式
+  defaultTheme: auto  # auto / light / dark
+
+  # 禁用某些页面类型
+  disableSpecial1stPost: false
+
+  # 搜索
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    keys:
+      - title
+      - permalink
+      - summary
+      - content
+
+  # 编辑链接（连到 GitHub）
+  editPost:
+    URL: "https://github.com/lshy0000/research-blog/tree/main/content"
+    Text: "在 GitHub 上编辑"
+    appendFilePath: true
+
+# ============================================
+# Markdown 配置
+# ============================================
+markup:
+  goldmark:
+    renderer:
+      unsafe: true  # 允许 HTML
+  highlight:
+    style: monokai
+    lineNos: true
