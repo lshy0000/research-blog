@@ -357,53 +357,54 @@ TypeScript/Node.js (ESM, strict mode)：
 
 ### 5.1 按企业需求维度排序
 
-#### 🥇 最接近企业级目标：llm-wiki-compiler (atomicstrata)
+#### 🥇 功能最全面、最终选定：nashsu/llm_wiki
 
 | 优势 | 劣势 |
 |------|------|
-| MIT 许可证 | 源文件有限规模（百份级） |
-| 标准 MCP 协议 | 无多租户/认证 |
-| 安全的本地 Web 查看器 | 图谱仅 wikilink 关系 |
-| 5 LLM Provider + 3 嵌入模型 | Node.js ≥ 24 依赖 |
-| 850+ 测试，代码质量高 | 快速演进（v0.7.0） |
-| 增量编译 + 来源追溯 + 审查队列 | |
+| 最完整图谱引擎（4 信号模型 + 社区检测） | GPL-3.0 许可证（本次项目忽略） |
+| 内置 HTTP API Server（端口 19828） | 桌面应用架构需重构为服务端 |
+| 四阶段混合检索（分词+向量+图谱） | 多用户/认证需从零构建 |
+| 两步 CoT 摄入 + 持久化队列 | Tauri → Server 重构工作量较大 |
+| sigma.js 力导向图 + 惊奇连接 + 知识空白 | |
+| 多格式摄入（PDF/DOCX/PPTX/XLSX/音视频） | |
+| Claude Code CLI 集成 + Deep Research | |
 
-**改造路径**：基于现有 Viewer 添加 Fastify/Express 服务端 → 加 JWT 认证 → 加 PostgreSQL 存储 → 图谱引入 neo4j
+**选定理由**：企业级改造需要完善的知识图谱、混合检索、多格式摄入和 API 层，nashsu/llm_wiki 在这四个维度上均为最优。GPL-3.0 许可证在本项目场景中不构成障碍。
 
-#### 🥈 知识图谱最强：nashsu/llm_wiki
+#### 🥈 MCP 标准化最优：llm-wiki-compiler (atomicstrata)
 
-拥有四个方案中最完善的知识图谱引擎（4 信号模型 + Louvain 社区检测 + 惊奇连接 + 知识空白），但 **GPL-3.0 许可证**是最大障碍。如果企业能接受 GPL 或联系作者获取商业许可，其 API 层（内置 HTTP Server）可被直接集成。
+标准 MCP 协议 + 850+ 测试 + MIT 许可证，代码质量高但功能维度不及 llm_wiki。可作为 MCP 层的设计参考。
 
 #### 🥉 Agent 集成最优雅：claude-obsidian (AgriciDaniel)
 
-11 个 Skill 的指令设计堪称最佳实践。其核心理念——让 AI Agent 自主维护知识库——对 Agent 友好型企业极具吸引力。但依赖 Obsidian 生态，Web 化困难。
+11 个 Skill 的指令设计堪称最佳实践，DragonScale 机制值得借鉴。但依赖 Obsidian 生态，Web 化困难。
 
 #### 4️⃣ 理念最激进：OpenKB (VectifyAI)
 
-"No Vector DB" 的坚持在理念上很有价值，PageIndex 长文档处理也是独有优势，但企业级特性近乎为零，且没有 Web UI 路线图。
+"No Vector DB" + PageIndex 长文档处理独有优势，Skill Factory 理念可参考。企业级特性近乎为零。
 
 ### 5.2 推荐策略
 
-**三个层次的企业方案建议**：
+**基于 nashsu/llm_wiki 的三阶段演进方案**：
 
-| 层次 | 方案 | 适用场景 |
+| 阶段 | 方案 | 适用场景 |
 |------|------|---------|
-| **轻量级（立即可用）** | `llm-wiki-compiler` 直接部署 + Obsidian 作为 Web 浏览端 | 小团队 (< 10 人)、Agent 工作流 |
-| **中等改造（1-3 月）** | `llm-wiki-compiler` + Fastify 服务端 + SQLite/PostgreSQL + JWT | 中型团队 (< 50 人) |
-| **企业级（3-6 月）** | 参考 `llm_wiki` 的图谱引擎 + `llm-wiki-compiler` 的 MCP 架构 + Neo4j + SSO | 全企业知识平台 |
+| **第一阶段（立即可用）** | nashsu/llm_wiki 内置 HTTP API + 单机部署 | 小团队 (< 10 人)、Agent 工作流 |
+| **第二阶段（1-3 月）** | 剥离 Tauri 壳 → Fastify/Express 服务端 + JWT 认证 + PostgreSQL | 中型团队 (< 50 人) |
+| **第三阶段（3-6 月）** | 引入 Neo4j 替代 sigma.js 内存图谱 + SSO + MCP Server + 分布式存储 | 全企业知识平台 |
 
 ### 5.3 最终推荐
 
-> **推荐以 `llm-wiki-compiler` 为底座进行企业级改造。**
+> **推荐以 `nashsu/llm_wiki` 为底座进行企业级改造，构建 KN（Knowledge Network）企业知识网络。**
 
 理由：
-1. **MIT 许可证**，无法律风险
-2. **MCP 协议原生支持**，是四个方案中 Agent 集成最标准的
-3. **已有 Web Viewer 基础**，改造为服务端成本最低
-4. **代码质量最高**（TypeScript strict + 850+ 测试 + fallow 健康检查）
-5. **多 Provider 支持**，可对接企业内部 LLM
+1. **功能最全面**：四个方案中唯一同时具备完整图谱引擎、混合检索、多格式摄入和 HTTP API 的方案
+2. **图谱引擎成熟**：4 信号关联度模型 + Louvain 社区检测 + 惊奇连接 + 知识空白检测，远超其他方案
+3. **内置 HTTP API**：已有 `/api/v1/projects/{id}/search` 和 `/api/v1/projects/{id}/graph` 接口，改造为服务端时可直接复用
+4. **混合检索最强**：分词 + 向量语义 + 图谱扩展三阶段管线，召回率 71.4%
+5. **多 Provider 支持**：OpenAI / Anthropic / Gemini / Ollama / 自定义，可对接企业内部 LLM
 
-核心需要补齐的部分：多租户认证、数据库持久化、图谱关系类型增强、文件共享协作。这四个模块可阶段性迭代开发。
+核心需要补齐的部分：Tauri 壳剥离为纯服务端、多租户认证、数据库持久化、MCP Server、协作编辑。这五个模块分阶段迭代开发。
 
 ---
 
